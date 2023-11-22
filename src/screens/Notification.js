@@ -61,11 +61,11 @@ export default function Notification() {
           // bigPictureURL: bigUrl, 
         })
         .then((response) => {
-          console.log(response);
           setIsLoading(false);
           setError('');
-  
-          // Cerrar el modal
+          setName('')
+          setMessage('')
+          setBigUrl('')
           onClose();
         })
         .catch((error) => {

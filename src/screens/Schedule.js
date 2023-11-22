@@ -52,11 +52,6 @@ export default function Schedule() {
       setError('Por favor, completa todos los campos.');
       return;
     }
-    console.log('Nombre:', name);
-    console.log('Mensaje:', message);
-    console.log('URL:', bigUrl);
-    console.log('Tiempo:', selectedTime);
-    console.log('Fecha:', selectedDate);
     const scheduledDateTime = DateTime.fromFormat(
       `${selectedDate} ${selectedTime}`,
       'yyyy-MM-dd HH:mm',
@@ -87,7 +82,6 @@ export default function Schedule() {
             // bigPictureURL: bigUrl, 
           })
           .then((response) => {
-            console.log(response);
             setIsLoading(false);
             setError('');
     
