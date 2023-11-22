@@ -27,7 +27,6 @@ const Login = () => {
     const login = useGoogleLogin({
         onSuccess: credentialResponse => {
             var decoded = jwtDecode(credentialResponse.credential)
-            console.log(decoded);
             sessionStorage.setItem('userToken', decoded.jti)
             sessionStorage.setItem('userName', decoded.given_name)
             sessionStorage.setItem('userImage', decoded.picture)
@@ -78,7 +77,6 @@ const Login = () => {
                     <GoogleLogin
                         onSuccess={credentialResponse => {
                             var decoded = jwtDecode(credentialResponse.credential)
-                            console.log(decoded);
                             sessionStorage.setItem('userToken', decoded.jti)
                             sessionStorage.setItem('userName', decoded.given_name)
                             sessionStorage.setItem('userImage', decoded.picture)
