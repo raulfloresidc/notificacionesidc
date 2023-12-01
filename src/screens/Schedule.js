@@ -45,6 +45,7 @@ export default function Schedule() {
   const [selectedTimezone, setSelectedTimezone] = useState('system'); // Establece una zona horaria predeterminada
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -69,22 +70,32 @@ export default function Schedule() {
 
     const timeDiff = scheduledDateTime.diff(currentDateTime).as('milliseconds');
 
-    setTimeout(async () => {
+    // setTimeout(async () => {
+      let data = JSON.stringify({
+        fecha: selectedDate,
+        hora: selectedTime,
+        title: name, 
+        body: message, 
+        dateSent: currentDateTime, 
+        ...(bigUrl && {bigUrl: bigUrl})
+      });
+      let config = {
+        headers: { 
+          'Content-Type': 'application/json'
+        },
+      };
       try {
         axios
-          .post("https://app.nativenotify.com/api/notification", {
-            appId: 14986,
-            appToken: 'xfyFThQZUbUWx2yMOTiS79',
-            title: name, 
-            body: message, 
-            dateSent: scheduledDateTime, 
-            // pushData: { yourProperty: 'yourPropertyValue' },
-            // bigPictureURL: bigUrl, 
-          })
+          .post("https://idcapp-backend.onrender.com/schedule", data, config)
           .then((response) => {
+            setIsFormSubmitted(true);
             setIsLoading(false);
             setError('');
-    
+            setName('')
+            setMessage('')
+            setBigUrl('')
+            setSelectedDate('')
+            setSelectedTime('')
             // Cerrar el modal
             onClose();
           })
@@ -99,7 +110,7 @@ export default function Schedule() {
         setIsLoading(false);
         setError('Hubo un error al enviar el formulario. Por favor, intenta nuevamente.');
       }
-    }, timeDiff);
+    // }, timeDiff);
   };
 return (
   <Box ml={{ base: 0, md: 50 }} p="4">
@@ -184,6 +195,21 @@ return (
                 </ModalFooter>
             </ModalContent>
             </ModalOverlay>
+          </Modal>
+          <Modal isOpen={isFormSubmitted} onClose={() => setIsFormSubmitted(false)}>
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>Éxito</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <Text>La notificación fue enviada con éxito.</Text>
+              </ModalBody>
+              <ModalFooter>
+                <Button colorScheme="blue" onClick={() => setIsFormSubmitted(false)}>
+                  Cerrar
+                </Button>
+              </ModalFooter>
+            </ModalContent>
           </Modal>
           </FormControl>
         </form>

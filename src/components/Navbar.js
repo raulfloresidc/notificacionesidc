@@ -54,7 +54,26 @@ function Navbar({children}) {
     const [ userName, setUserName ]  = useState()
     const navigate = useNavigate();
 
-
+    const NotificationsMenu = () => {
+      const [notifications, setNotifications] = useState(['Hola','Hola','Hola','Hola']); // Agrega tu lista de notificaciones
+  
+      return (
+        <Menu>
+          <MenuButton py={2} transition="all 0.3s" _focus={{ boxShadow: 'none' }}>
+            <IconButton size="lg" variant="ghost" aria-label="open menu" icon={<FiBell />} />
+          </MenuButton>
+          <MenuList
+            bg={useColorModeValue('white', 'gray.900')}
+            borderColor={useColorModeValue('gray.200', 'gray.700')}>
+            {notifications.map((notification, index) => (
+              <MenuItem key={index}>{notification}</MenuItem>
+            ))}
+            {notifications.length === 0 && <MenuItem>No hay notificaciones</MenuItem>}
+            {/* <MenuItem>Ver todas</MenuItem> */}
+          </MenuList>
+        </Menu>
+      );
+    };
     const SidebarContent = ({ onClose, ...rest }) => {
       return (
         <Box
@@ -143,7 +162,7 @@ function Navbar({children}) {
           </Text>
     
           <HStack spacing={{ base: '0', md: '6' }}>
-            <IconButton size="lg" variant="ghost" aria-label="open menu" icon={<FiBell />} />
+            <NotificationsMenu />
             <Flex alignItems={'center'}>
               <Menu>
                 <MenuButton py={2} transition="all 0.3s" _focus={{ boxShadow: 'none' }}>

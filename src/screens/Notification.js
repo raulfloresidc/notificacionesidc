@@ -41,6 +41,7 @@ export default function Notification() {
     const [isLoading, setIsLoading] = useState(false);
     const [bigUrl, setBigUrl] = useState('');
     const [error, setError] = useState('');
+    const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
     const handleSubmit = (e) => {
       e.preventDefault();
@@ -58,9 +59,10 @@ export default function Notification() {
           body: message, 
           dateSent: scheduledDateTime, 
           // pushData: { yourProperty: 'yourPropertyValue' },
-          // bigPictureURL: bigUrl, 
+          ...(bigUrl && {bigUrl: bigUrl})
         })
         .then((response) => {
+          setIsFormSubmitted(true);
           setIsLoading(false);
           setError('');
           setName('')
@@ -132,6 +134,21 @@ export default function Notification() {
                   </ModalFooter>
               </ModalContent>
               </ModalOverlay>
+            </Modal>
+            <Modal isOpen={isFormSubmitted} onClose={() => setIsFormSubmitted(false)}>
+              <ModalOverlay />
+              <ModalContent>
+                <ModalHeader>Éxito</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>
+                  <Text>La notificación fue enviada con éxito.</Text>
+                </ModalBody>
+                <ModalFooter>
+                  <Button colorScheme="blue" onClick={() => setIsFormSubmitted(false)}>
+                    Cerrar
+                  </Button>
+                </ModalFooter>
+              </ModalContent>
             </Modal>
             </FormControl>
           </form>
